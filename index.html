@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tripify - Discover Pakistan's Hidden Beauty</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="Navbar">
+            <div class="nav-cont">
+                <div class="nav-logo">
+                    <h2>Tripify</h2>
+                </div>
+                <div class="nav-menu">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="products.html" class="nav-link">Events</a>
+                    <a href="services.html" class="nav-link">Services</a>
+                    <a href="blog.html" class="nav-link">Travel Blog</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                    <a href="feedback.html" class="nav-link">Feedback</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section with Search -->
+    <section class="Hero">
+        <div class="hero-content">
+            <h1>Discover The Hidden Beauty of Pakistan</h1>
+            <p>Experience breathtaking landscapes, rich culture, and unforgettable adventures in the heart of South Asia</p>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="eventSearch" placeholder="Search events, destinations, or activities...">
+                <button onclick="searchEvents()">Search</button>
+            </div>
+            <p id="searchMessage"></p>
+        </div>
+    </section>
+
+   <!-- Image Slider Section -->
+<section class="slider-section">
+    <div class="slider-container">
+        <h2>Popular Experiences</h2>
+        <div class="slider">
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <img src="hunza-valley.jpg" alt="Hunza Valley">
+                <div class="slide-text">Hunza Valley - Mountain Adventures</div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide">
+                <img src="swat-valley.jpg" alt="Swat Valley">
+                <div class="slide-text">Swat Valley - Switzerland of Pakistan</div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide">
+                <img src="skardu.jpg" alt="Skardu">
+                <div class="slide-text">Skardu - Gateway to World's Highest Peaks</div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="slide">
+                <img src="northern-tour.jpg" alt="Northern Areas">
+                <div class="slide-text">Northern Areas - Majestic Landscapes</div>
+            </div>
+            <!-- Slide 5 -->
+            <div class="slide">
+                <img src="cultural-festival.jpg" alt="Cultural Festival">
+                <div class="slide-text">Cultural Festivals - Vibrant Traditions</div>
+            </div>
+        </div>
+        
+        <!-- Buttons -->
+        <button class="slider-btn prev" onclick="moveSlide(-1)">❮</button>
+        <button class="slider-btn next" onclick="moveSlide(1)">❯</button>
+        
+        <!-- Dots -->
+        <div class="slider-dots">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
+            <span class="dot" onclick="goToSlide(3)"></span>
+            <span class="dot" onclick="goToSlide(4)"></span>
+        </div>
+    </div>
+</section>
+    <!-- Featured Events Section -->
+    <section class="featured-section">
+        <div class="featured-container">
+            <h2>Featured Events</h2>
+            <div class="Featured-events">
+                <div class="Featured-event-card">
+                    <img src="northern-tour.jpg" alt="Northern Areas Tour">
+                    <h3>Northern Areas Expedition</h3>
+                    <p>7-day guided tour through Hunza, Skardu, and Fairy Meadows</p>
+                    <p>Includes hiking, cultural experiences, and photography sessions</p>
+                    <span class="event-price">From $299</span>
+                </div>
+
+                <div class="Featured-event-card">
+                    <img src="cultural-festival.jpg" alt="Cultural Festival">
+                    <h3>Kalash Cultural Festival</h3>
+                    <p>Experience unique traditions in the Kalash Valleys</p>
+                    <p>Traditional dances, local cuisine, and cultural workshops</p>
+                    <span class="event-price">From $199</span>
+                </div>
+                
+                <div class="Featured-event-card">
+                    <img src="adventure-tour.jpg" alt="Adventure Tour">
+                    <h3>Hiking & Camping Adventure</h3>
+                    <p>3-day hiking tour in the Himalayan foothills</p>
+                    <p>Professional guides, equipment, and authentic local meals included</p>
+                    <span class="event-price">From $149</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Info Sections -->
+    <section class="Additional-info-sections">
+        <div class="Additional-container">
+            <div class="Additional-grid">
+                <div class="Additional-card">
+                    <h3>Local Guides</h3>
+                    <p>Connect with experienced local guides who know hidden gems and authentic experiences</p>
+                </div>
+
+                <div class="Additional-card">
+                    <h3>Cultural Immersion</h3>
+                    <p>Experience traditional festivals, local cuisine, and authentic cultural activities</p>
+                </div>
+
+                <div class="Additional-card">
+                    <h3>Adventure Activities</h3>
+                    <p>From trekking to paragliding, discover thrilling adventures across Pakistan</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- External Link Section -->
+    <section class="external-link-section">
+        <div class="external-container">
+            <p>For international travel guidelines, visit: 
+
+                <a href="https://www.gov.uk/foreign-travel-advice/pakistan" target="_blank">GOV.UK Travel Advice</a>
+            </p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="social-links">
+                <a href="https://www.facebook.com/profile.php?id=61583804927077" target="_blank">Facebook</a>
+                <a href="https://www.instagram.com/tripify05?igsh=MTJ5YnJuNHdxeTVwbw==" target="_blank">Instagram</a>
+            </div>
+            <p>&copy; 2025 Tripify - Discover Pakistan, Together</p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+    
+</body>
+</html>
