@@ -1,16 +1,58 @@
-// script.js  Complete Integrated JavaScript for Tripify Website
+// scripts.js — Tripify website interactions
+
+let currentSlide = 0;
+let slideInterval = null;
+
+function showSlide(index) {
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slider-dots .dot');
+    if (!slides.length) return;
+
+    currentSlide = ((index % slides.length) + slides.length) % slides.length;
+    slides.forEach((slide, i) => slide.classList.toggle('active', i === currentSlide));
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+}
+
+function moveSlide(direction) {
+    showSlide(currentSlide + direction);
+}
+
+function goToSlide(index) {
+    showSlide(index);
+}
+
+function initSlider() {
+    const slides = document.querySelectorAll('.slide');
+    if (!slides.length) return;
+
+    showSlide(0);
+    if (slideInterval) clearInterval(slideInterval);
+    slideInterval = setInterval(() => moveSlide(1), 5000);
+
+    const container = document.querySelector('.slider-container');
+    if (container) {
+        container.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        container.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(() => moveSlide(1), 5000);
+        });
+    }
+}
 
 // Search function for Home Page
 function searchEvents() {
-    const searchTerm = document.getElementById('eventSearch').value;
+    const searchInput = document.getElementById('eventSearch');
     const messageElement = document.getElementById('searchMessage');
+    if (!searchInput || !messageElement) return;
+
+    const searchTerm = searchInput.value.trim();
 
     if (searchTerm) {
-        messageElement.textContent = `Searching for: "${searchTerm}". This is a demo.`;
-        messageElement.style.color = "#2A9D8F";
+        messageElement.textContent = `Showing events matching "${searchTerm}"…`;
+        messageElement.style.color = '#2A9D8F';
+        window.location.href = `products.html?search=${encodeURIComponent(searchTerm)}`;
     } else {
         messageElement.textContent = 'Please enter a search term.';
-        messageElement.style.color = "#e76f51";
+        messageElement.style.color = '#e76f51';
     }
 }
 
@@ -175,9 +217,96 @@ function setupStarRating() {
     });
 }
 
+function setupMobileNav() {
+    const navCont = document.querySelector('.nav-cont');
+    const navMenu = document.querySelector('.nav-menu');
+    if (!navCont || !navMenu || document.querySelector('.nav-toggle')) return;
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'nav-toggle';
+    toggle.setAttribute('aria-label', 'Open navigation menu');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.textContent = '☰';
+    toggle.addEventListener('click', () => {
+        const isOpen = navMenu.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        toggle.textContent = isOpen ? '✕' : '☰';
+    });
+    navCont.appendChild(toggle);
+
+    navMenu.querySelectorAll('.nav-link').forEach((link) => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('open');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.textContent = '☰';
+        });
+    });
+}
+
+function setActiveNavLink() {
+    const page = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-link').forEach((link) => {
+        const href = link.getAttribute('href');
+        link.classList.toggle('active', href === page);
+    });
+}
+
+function setupBookButtons() {
+    document.querySelectorAll('.book-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const card = btn.closest('.event-card');
+            const title = card?.querySelector('h3')?.textContent || 'this tour';
+            window.location.href = `contact.html?interest=${encodeURIComponent(title)}`;
+        });
+    });
+}
+
+function applyEventSearchFilter() {
+    const params = new URLSearchParams(window.location.search);
+    const term = params.get('search')?.trim().toLowerCase();
+    if (!term) return;
+
+    const cards = document.querySelectorAll('.event-card');
+    let visible = 0;
+    cards.forEach((card) => {
+        const text = card.textContent.toLowerCase();
+        const match = text.includes(term);
+        card.style.display = match ? '' : 'none';
+        if (match) visible += 1;
+    });
+
+    const heading = document.querySelector('.events-container h2');
+    if (heading && visible > 0) {
+        heading.textContent = `Featured Events & Tours (${visible} match "${term}")`;
+    }
+}
+
+function prefillContactInterest() {
+    const params = new URLSearchParams(window.location.search);
+    const interest = params.get('interest');
+    const subject = document.getElementById('subject');
+    const message = document.getElementById('message');
+    if (!interest) return;
+
+    if (subject) subject.value = 'booking';
+    if (message && !message.value.trim()) {
+        message.value = `I would like to learn more about: ${interest}`;
+    }
+}
+
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Tripify website loaded successfully!');
+    if (typeof initTripifyImages === 'function') {
+        initTripifyImages();
+    }
+
+    initSlider();
+    setupMobileNav();
+    setActiveNavLink();
+    setupBookButtons();
+    applyEventSearchFilter();
+    prefillContactInterest();
     
     // Search functionality
     const searchInput = document.getElementById('eventSearch');
@@ -222,17 +351,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Add loading animation for images
-    const images = document.querySelectorAll('img');
-    images.forEach(img => {
-        img.addEventListener('load', function() {
-            this.style.opacity = '1';
-        });
-        // Set initial opacity for fade-in effect
-        img.style.opacity = '0';
-        img.style.transition = 'opacity 0.3s ease';
-    });
-    
     // Form reset functionality
     const resetButtons = document.querySelectorAll('button[type="reset"]');
     resetButtons.forEach(button => {
@@ -253,6 +371,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Make functions global for HTML onclick attributes
 window.searchEvents = searchEvents;
+window.moveSlide = moveSlide;
+window.goToSlide = goToSlide;
 window.closeThankYou = closeThankYou;
 
 // Utility function for external links
